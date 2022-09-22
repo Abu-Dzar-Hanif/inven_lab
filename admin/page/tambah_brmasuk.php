@@ -1,0 +1,91 @@
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tambah Barang Masuk</h6>
+    </div>
+    <div class="card-body">
+        <form action="admin/proses/input_tmp.php" method="post">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="nama">Nama Barang</label>
+                        <select name="nama" class="form-control" id="">
+                            <option value="">Pilih Barang</option>
+                            <?php
+                        $br = mysqli_query($koneksi,"SELECT * FROM tbl_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand");
+                        while ($a = mysqli_fetch_array($br)) {
+                        ?>
+                            <option value="<?= $a['id_barang']?>"><?= $a['nama_barang']?> (<?= $a['nama_brand']?>)
+                            </option>
+                            <?php }?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="jenis">Jumlah Barang Masuk</label>
+                        <div class="input-group">
+                            <input type="number" name="jumlah" class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-success" type="submit" id="button-addon2"
+                                    name="tambah">Tambah</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" name="j" class="form-control" value="1" hidden>
+            </div>
+            <?php
+            $query = mysqli_query($koneksi,"SELECT * FROM tmp JOIN tbl_barang ON tmp.kode_br=tbl_barang.id_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand  WHERE tmp.jenis=1");
+            $no = 1;
+            $cek = mysqli_num_rows($query);
+            if($cek > 0){
+            ?>
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                    while ($a = mysqli_fetch_array($query)) {
+                    ?>
+                        <tr>
+                            <td><?= $no++?></td>
+                            <td>
+                                <?= $a['id_barang']?>
+                            </td>
+                            <td>
+                                <?= $a['nama_barang']?> (<?= $a['nama_brand']?>)
+                            </td>
+                            <td>
+                                <input type="text" readonly class="form-control-plaintext" value="<?= $a['jumlah']?>"
+                                    name="jumlah">
+                            </td>
+                            <td>
+                                <a href="admin/proses/delete_tmp.php?i=<?= password_hash($a['id_tmp'],PASSWORD_DEFAULT)?>"
+                                    class="btn btn-sm btn-danger mx-2" name="delete"><i class="fa fa-trash"></i></a>
+
+                            </td>
+                        </tr>
+                        <?php }?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="text" name="ket" class="form-control" placeholder="keterangan" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
+            </div>
+            <?php }?>
+        </form>
+    </div>
+</div>
