@@ -17,7 +17,8 @@
                             $qbm = mysqli_query($koneksi,"SELECT SUM(jumlah_masuk) AS tbm FROM tbl_barang_masuk");
                             $dbm = mysqli_fetch_array($qbm);
                             ?>
-                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $dbm['tbm']?></div>
+                             <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                 <?= $dbm['tbm'] == null ? 0: $dbm['tbm']?></div>
                          </div>
                          <div class="col-auto">
                              <i class="fas fa-box fa-2x text-gray-300"></i>
@@ -38,7 +39,8 @@
                             $qbk = mysqli_query($koneksi,"SELECT SUM(jumlah_keluar) AS tbk FROM tbl_barang_keluar");
                             $dbk = mysqli_fetch_array($qbk);
                             ?>
-                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $dbk['tbk']?></div>
+                             <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                 <?= $dbk['tbk'] == null ? 0 : $dbk['tbk']?></div>
                          </div>
                          <div class="col-auto">
                              <i class="fas fa-box-open fa-2x text-gray-300"></i>
@@ -59,7 +61,8 @@
                                  $qs = mysqli_query($koneksi,"SELECT SUM(stok) AS ts FROM tbl_stok");
                                  $ds = mysqli_fetch_array($qs)
                                  ?>
-                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$ds['ts']?></div>
+                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$ds['ts'] == null ? 0 : $ds['ts']?>
+                             </div>
                          </div>
                          <div class="col-auto">
                              <i class="fas fa-boxes fa-2x text-gray-300"></i>

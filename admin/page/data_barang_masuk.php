@@ -14,39 +14,41 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nama Barang</th>
-                        <th>Jumlah</th>
+                        <th>Kode Barang Masuk</th>
+                        <th>Tujuan Transaksi</th>
+                        <th>Total</th>
                         <th>Tgl Masuk</th>
-                        <th>Keterangan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $query = mysqli_query($koneksi,"SELECT * FROM `tbl_barang_masuk` JOIN tbl_barang ON tbl_barang_masuk.barang = tbl_barang.id_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand");
+                    $query = mysqli_query($koneksi,"SELECT * FROM tbl_transaksi inner JOIN tbl_tujuan ON tbl_transaksi.jenis_transaksi = tbl_tujuan.id_tujuan WHERE tbl_transaksi.tipe='M'");
                     $no = 1;
                     while ($a = mysqli_fetch_array($query)) {
                     ?>
                     <tr>
                         <td><?= $no++?></td>
-                        <td><?= $a['nama_barang']?> (<?= $a['nama_brand']?>)</td>
-                        <td><?= $a['jumlah_masuk']?></td>
-                        <td><?= $a['tgl_masuk']?></td>
-                        <td><?= $a['keterangan']?></td>
+                        <td><?= $a['id_transaksi']?></td>
+                        <td><?= $a['tujuan']?></td>
+                        <td><?= $a['total_item']?></td>
+                        <td><?= $a['tgl_transaksi']?></td>
                         <td>
-                            <?php
-                                if($_SESSION['level'] ==  1){
-                            ?>
                             <div class="row ml-0">
+                                <a href="index.php?p=<?= password_hash('detail-transaksi-masuk',PASSWORD_DEFAULT)?>&i=<?= password_hash($a['id_transaksi'],PASSWORD_DEFAULT)?>"
+                                    class="btn btn-sm btn-warning">Detail</a>
+                                <?php
+                                if($_SESSION['level'] ==  1){
+                                ?>
                                 <form
-                                    action="admin/proses/delete_bm.php?i=<?= password_hash($a['id_bm'],PASSWORD_DEFAULT)?>"
+                                    action="admin/proses/delete_bm.php?i=<?= password_hash($a['id_transaksi'],PASSWORD_DEFAULT)?>"
                                     method="post">
                                     <button type="submit" class="btn btn-sm btn-danger mx-2"
                                         onclick="return confirm('PERINGATANA!! menghapus data ini akan mengembalikan stok seperti sebelum barang ini di input, Yakin Hapus??')"
                                         name="submit">Hapus</button>
                                 </form>
+                                <?php }?>
                             </div>
-                            <?php }?>
                         </td>
                     </tr>
                     <?php }?>

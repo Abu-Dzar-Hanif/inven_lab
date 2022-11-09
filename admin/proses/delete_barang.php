@@ -2,10 +2,11 @@
 require_once('../../setup/koneksi.php');
 if(isset($_POST['submit'])){
     $id = $_GET['i'];
-    $cek = mysqli_query($koneksi,"SELECT id_barang FROM tbl_barang");
+    $cek = mysqli_query($koneksi,"SELECT id_barang,foto FROM tbl_barang");
     while ($a = mysqli_fetch_array($cek)) {
         if(password_verify($a['id_barang'],$id)){
             $id = $a['id_barang'];
+            $f = $a['foto'];
         }
     }
     $ci = mysqli_query($koneksi,"SELECT barang FROM tbl_barang_masuk WHERE barang = '$id'");
@@ -16,6 +17,7 @@ if(isset($_POST['submit'])){
         echo "<script>window.alert('Gagal Hapus!!!, Barang ini sudah terhubung ke Transaksi Masuk atau Keluar');
                 window.location=(history.back())</script>";
     }elseif($di == 0 || $do == 0){
+        unlink('../img/' . $f);
         $query = mysqli_query($koneksi,"DELETE FROM tbl_barang WHERE id_barang = '$id'");
         if($query){
             $delStok = mysqli_query($koneksi,"DELETE FROM tbl_stok WHERE barang = '$id'");

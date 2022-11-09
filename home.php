@@ -26,25 +26,26 @@
         </div>
         <div class="container">
             <div class="row justify-content-center">
-                <div class="card col">
-                    <div class="row">
-                        <div class="card-boby">
-                            <img src="img/global.png" alt="" height="200px">
-                        </div>
-                        <div class="card-body text-center">
-                            <i class="fas fa-laptop-house fa-4x"></i>
-                            <p class="text-dark">
-                                Selamat Datang Di Aplikasi Inventori Lab Komputer <br>
-                                silahkan klik tombol di bawah ini untuk memulai
-                            </p>
-                            <a href="index.php?p=<?= password_hash('login',PASSWORD_DEFAULT)?>"
-                                class="btn btn-primary">Mulai <i class="fas fa-sign-in-alt"></i></a>
-                        </div>
-                        <div class="card-boby">
-                            <img src="img/logo.png" alt="" height="200px">
+
+                <div class="col-7">
+
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body">
+                            <!-- Nested Row within Card Body -->
+                            <div class="row">
+                                <img src="img/Glogo.png" alt="" width="75px">
+                                <p class="d-inline-block ml-auto text-center align-center text-dark">
+                                    Selamat Datang Di Aplikasi Inventori Lab Komputer <br>
+                                    silahkan klik tombol di bawah ini untuk memulai
+                                </p>
+                                <img class="ml-auto" src="img/logo.png" alt="" width="75px">
+                            </div>
+                            <div class="text-center">
+                                <a href="index.php?p=<?= password_hash('login',PASSWORD_DEFAULT)?>"
+                                    class="btn btn-primary">Mulai <i class="fas fa-sign-in-alt"></i></a>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Sep 2022 pada 08.02
--- Versi server: 10.1.37-MariaDB
--- Versi PHP: 5.6.39
+-- Waktu pembuatan: 09 Nov 2022 pada 04.28
+-- Versi server: 10.4.25-MariaDB
+-- Versi PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -39,10 +38,7 @@ CREATE TABLE `tbl_admin` (
 
 INSERT INTO `tbl_admin` (`id_admin`, `nama`) VALUES
 ('ADM001', 'PancaKarya'),
-('ADM002', 'Admin Lab'),
-('ADM004', 'test api update'),
-('ADM005', 'user mobileup'),
-('ADM006', 'test input mobile');
+('ADM002', 'Admin Lab');
 
 -- --------------------------------------------------------
 
@@ -53,6 +49,7 @@ INSERT INTO `tbl_admin` (`id_admin`, `nama`) VALUES
 CREATE TABLE `tbl_barang` (
   `id_barang` varchar(11) NOT NULL,
   `nama_barang` varchar(50) NOT NULL,
+  `foto` text NOT NULL,
   `jenis` int(11) NOT NULL,
   `brand` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -61,13 +58,9 @@ CREATE TABLE `tbl_barang` (
 -- Dumping data untuk tabel `tbl_barang`
 --
 
-INSERT INTO `tbl_barang` (`id_barang`, `nama_barang`, `jenis`, `brand`) VALUES
-('BR001', 'Monitor', 2, 1),
-('BR002', 'Monitor', 2, 2),
-('BR003', 'CPU', 1, 3),
-('BR004', 'test mobile', 3, 0),
-('BR005', 'test', 3, 0),
-('BR006', 'test', 3, 0);
+INSERT INTO `tbl_barang` (`id_barang`, `nama_barang`, `foto`, `jenis`, `brand`) VALUES
+('BR001', 'Monitor Samsung 16 inci', '1294736194scaled_image_picker452426959234841680.png', 2, 1),
+('BR002', 'Monitor LG 16 inci', '1008729677scaled_image_picker2395865890104526759.png', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -79,19 +72,8 @@ CREATE TABLE `tbl_barang_keluar` (
   `id_bk` int(11) NOT NULL,
   `id_barang_keluar` varchar(11) NOT NULL,
   `barang` varchar(11) NOT NULL,
-  `jumlah_keluar` int(11) NOT NULL,
-  `tgl_keluar` date NOT NULL,
-  `keterangan` text NOT NULL,
-  `user` varchar(11) NOT NULL
+  `jumlah_keluar` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `tbl_barang_keluar`
---
-
-INSERT INTO `tbl_barang_keluar` (`id_bk`, `id_barang_keluar`, `barang`, `jumlah_keluar`, `tgl_keluar`, `keterangan`, `user`) VALUES
-(1, 'BK001', 'BR001', 5, '2022-09-14', 'pemasangan ke lab', 'ADM002'),
-(2, 'BK001', 'BR001', 5, '2022-09-14', 'pemasangan ke lab', 'ADM002');
 
 -- --------------------------------------------------------
 
@@ -103,20 +85,8 @@ CREATE TABLE `tbl_barang_masuk` (
   `id_bm` int(11) NOT NULL,
   `id_barang_masuk` varchar(11) NOT NULL,
   `barang` varchar(11) NOT NULL,
-  `jumlah_masuk` int(11) NOT NULL,
-  `tgl_masuk` date NOT NULL,
-  `keterangan` text NOT NULL,
-  `user` varchar(11) NOT NULL
+  `jumlah_masuk` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `tbl_barang_masuk`
---
-
-INSERT INTO `tbl_barang_masuk` (`id_bm`, `id_barang_masuk`, `barang`, `jumlah_masuk`, `tgl_masuk`, `keterangan`, `user`) VALUES
-(1, 'BM001', 'BR001', 10, '2022-09-14', 'pendataan lab', 'ADM001'),
-(2, 'BM001', 'BR002', 10, '2022-09-14', 'pendataan lab', 'ADM001'),
-(3, 'BM002', 'BR003', 20, '2022-09-14', 'pendataan lab', 'ADM001');
 
 -- --------------------------------------------------------
 
@@ -136,8 +106,7 @@ CREATE TABLE `tbl_brand` (
 INSERT INTO `tbl_brand` (`id_brand`, `nama_brand`) VALUES
 (1, 'Samsung'),
 (2, 'LG'),
-(3, 'Rakitan'),
-(4, 'edit brand mobile');
+(3, 'Rakitan');
 
 -- --------------------------------------------------------
 
@@ -156,8 +125,7 @@ CREATE TABLE `tbl_jenis` (
 
 INSERT INTO `tbl_jenis` (`id_jenis`, `nama_jenis`) VALUES
 (1, 'CPU'),
-(2, 'Monitor'),
-(3, 'edit mobile');
+(2, 'Monitor');
 
 -- --------------------------------------------------------
 
@@ -195,11 +163,45 @@ CREATE TABLE `tbl_stok` (
 
 INSERT INTO `tbl_stok` (`barang`, `stok`) VALUES
 ('BR001', 0),
-('BR002', 10),
-('BR003', 20),
-('BR004', 0),
-('BR005', 0),
-('BR006', 0);
+('BR002', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_transaksi`
+--
+
+CREATE TABLE `tbl_transaksi` (
+  `id_transaksi` varchar(11) NOT NULL,
+  `jenis_transaksi` int(11) NOT NULL,
+  `keterangan` text NOT NULL,
+  `total_item` int(11) NOT NULL,
+  `tgl_transaksi` date NOT NULL,
+  `user` varchar(11) NOT NULL,
+  `tipe` varchar(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_tujuan`
+--
+
+CREATE TABLE `tbl_tujuan` (
+  `id_tujuan` int(11) NOT NULL,
+  `tujuan` varchar(50) NOT NULL,
+  `tipe` varchar(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tbl_tujuan`
+--
+
+INSERT INTO `tbl_tujuan` (`id_tujuan`, `tujuan`, `tipe`) VALUES
+(1, 'pembelian', 'M'),
+(2, 'penjualan', 'K'),
+(3, 'pengembalian', 'M'),
+(4, 'peminjaman', 'K');
 
 -- --------------------------------------------------------
 
@@ -220,10 +222,7 @@ CREATE TABLE `tbl_user` (
 
 INSERT INTO `tbl_user` (`id_user`, `username`, `password`, `level`) VALUES
 ('ADM001', 'panca', '$2y$10$gcs5HptvwN9BJkAlC6KirO8/vnY9TvckkUnqnRGHYrb218qe3WKsG', 1),
-('ADM002', 'admin', '$2y$10$P5qwTcMNIYhPZpLFLCRCJu3MoZZQSQl6C2Tp7fGDjjCROXWFoBgv2', 2),
-('ADM004', 'test api up', '$2y$10$F/A7ITAlTcXwRE8TiqRgR.6w7aYB6ItF4FVHwnY2ZaKqSMForqfNu', 1),
-('ADM005', 'umup', '$2y$10$7mo2rpMTjjuBDXqzM154vOCODGXdML1BJxIGF77umwurc4QiuPNxS', 1),
-('ADM006', '', '$2y$10$yZgRe9X0xEQtUGUGFNJ9IeLzx7ilCyDcgFLFbvj6VgHbcoI5Zr1jS', 0);
+('ADM002', 'admin', '$2y$10$l11F5JoY.hSs2IsVPeo8Re9dMOfLuxhGqwPc/q/.kPcf9tcfY5Puy', 2);
 
 -- --------------------------------------------------------
 
@@ -235,15 +234,9 @@ CREATE TABLE `tmp` (
   `id_tmp` int(11) NOT NULL,
   `kode_br` varchar(11) NOT NULL,
   `jumlah` int(11) NOT NULL,
-  `jenis` int(11) NOT NULL
+  `jenis` int(11) NOT NULL,
+  `user` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `tmp`
---
-
-INSERT INTO `tmp` (`id_tmp`, `kode_br`, `jumlah`, `jenis`) VALUES
-(1, 'BR002', 20, 1);
 
 --
 -- Indexes for dumped tables
@@ -292,6 +285,18 @@ ALTER TABLE `tbl_level`
   ADD PRIMARY KEY (`id_level`);
 
 --
+-- Indeks untuk tabel `tbl_transaksi`
+--
+ALTER TABLE `tbl_transaksi`
+  ADD PRIMARY KEY (`id_transaksi`);
+
+--
+-- Indeks untuk tabel `tbl_tujuan`
+--
+ALTER TABLE `tbl_tujuan`
+  ADD PRIMARY KEY (`id_tujuan`);
+
+--
 -- Indeks untuk tabel `tbl_user`
 --
 ALTER TABLE `tbl_user`
@@ -311,25 +316,25 @@ ALTER TABLE `tmp`
 -- AUTO_INCREMENT untuk tabel `tbl_barang_keluar`
 --
 ALTER TABLE `tbl_barang_keluar`
-  MODIFY `id_bk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_bk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_barang_masuk`
 --
 ALTER TABLE `tbl_barang_masuk`
-  MODIFY `id_bm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_bm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_brand`
 --
 ALTER TABLE `tbl_brand`
-  MODIFY `id_brand` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_brand` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_jenis`
 --
 ALTER TABLE `tbl_jenis`
-  MODIFY `id_jenis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_jenis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_level`
@@ -338,10 +343,16 @@ ALTER TABLE `tbl_level`
   MODIFY `id_level` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT untuk tabel `tbl_tujuan`
+--
+ALTER TABLE `tbl_tujuan`
+  MODIFY `id_tujuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT untuk tabel `tmp`
 --
 ALTER TABLE `tmp`
-  MODIFY `id_tmp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_tmp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

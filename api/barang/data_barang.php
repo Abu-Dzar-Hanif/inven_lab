@@ -10,7 +10,10 @@ while ($a = mysqli_fetch_array($query)) {
         'id_barang' => $a['id_barang'],
         'nama_barang' => $a['nama_barang'],
         'nama_jenis' => $a['nama_jenis'],
-        'nama_brand' => $a['nama_brand']
+        'nama_brand' => $a['nama_brand'],
+        'foto' => $a['foto'],
+        'id_jenis' => $a['id_jenis'],
+        'id_brand' => $a['id_brand']
     ];
     array_push($respons, $a);
 }

@@ -9,6 +9,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Kode Barang</th>
                         <th>Nama Barang</th>
                         <th>Jenis</th>
                         <th>Brand</th>
@@ -23,6 +24,7 @@
                     ?>
                     <tr>
                         <td><?= $no++?></td>
+                        <td><?= $a['id_barang']?></td>
                         <td><?= $a['nama_barang']?></td>
                         <td><?= $a['nama_jenis']?></td>
                         <td><?= $a['nama_brand']?></td>

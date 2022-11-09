@@ -23,9 +23,9 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label for="jenis">Jumlah Barang Keluar</label>
+                        <label for="jum">Jumlah Barang Keluar</label>
                         <div class="input-group">
-                            <input type="number" name="jumlah" class="form-control">
+                            <input type="number" name="jum" class="form-control">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-success" type="submit" id="button-addon2"
                                     name="tambah">Tambah</button>
@@ -38,7 +38,7 @@
                 <input type="text" name="j" class="form-control" value="2" hidden>
             </div>
             <?php
-            $query = mysqli_query($koneksi,"SELECT * FROM tmp JOIN tbl_barang ON tmp.kode_br=tbl_barang.id_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand WHERE tmp.jenis=2");
+            $query = mysqli_query($koneksi,"SELECT * FROM tmp JOIN tbl_barang ON tmp.kode_br=tbl_barang.id_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand WHERE tmp.jenis=2 AND user = '$_SESSION[id]'");
             $no = 1;
             $cek = mysqli_num_rows($query);
             if($cek > 0){
@@ -77,6 +77,17 @@
                         <?php }?>
                     </tbody>
                 </table>
+            </div>
+            <div class="form-group">
+                <select name="tujuan" id="" class="form-control">
+                    <option value="">Tujuan Transaksi</option>
+                    <?php
+                    $qt = mysqli_query($koneksi,"SELECT id_tujuan, tujuan FROM tbl_tujuan WHERE tipe = 'K'");
+                    while ($t = mysqli_fetch_array($qt)) {
+                    ?>
+                    <option value="<?= $t['id_tujuan']?>"><?= $t['tujuan']?></option>
+                    <?php }?>
+                </select>
             </div>
             <div class="form-group">
                 <input type="text" name="ket" class="form-control" placeholder="keterangan">

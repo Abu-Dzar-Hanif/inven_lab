@@ -16,10 +16,16 @@ $b = mysqli_fetch_array($query);
     </div>
     <div class="card-body">
         <form action="admin/proses/update_barang.php?i=<?= password_hash($b['id_barang'],PASSWORD_DEFAULT)?>"
-            method="post">
+            method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nama">Nama Barang</label>
                 <input type="text" name="nama" value="<?= $b['nama_barang']?>" class="form-control" id="nama">
+            </div>
+            <div class="form-group">
+                <label for="">foto</label>
+                <img src="admin/img/<?= $b['foto']?>" id="img_ori" alt="" width="50%">
+                <img id="imgv" alt="" width="50%" class="my-1">
+                <input type="file" name="foto" id="foto" class="form-control" onChange="previewImg();hide();">
             </div>
             <div class="form-group">
                 <label for="jenis">Jenis Barang</label>

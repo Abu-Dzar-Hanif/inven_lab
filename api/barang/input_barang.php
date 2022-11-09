@@ -9,20 +9,50 @@ $id = "BR".sprintf("%03s",$urut);
 $nama = $_POST['nama'];
 $brand = $_POST['brand'];
 $jenis = $_POST['jenis'];
+$rand = rand();
+$ekstensi =  ['png','jpg','jpeg'];
+$filename = str_replace(" ","",$_FILES['foto']['name']);
+$ukuran = $_FILES['foto']['size'];
+$ext = pathinfo($filename, PATHINFO_EXTENSION);
+$img = $rand.$filename;
+$Path = "../../admin/img/" . $img;
 header('Content-Type: text/xml');
-$qin = mysqli_query($koneksi,"INSERT INTO tbl_barang(id_barang,nama_barang,jenis,brand) VALUES('$id','$nama','$jenis','$brand')");
-if($qin){
-    $qs = mysqli_query($koneksi,"INSERT INTO tbl_stok(barang,stok) VALUES('$id',0)");
-    if($qs){
-        $respons = [
-            'success' => 1,
-            'message' => "berhasil simpan"
-        ];
-        echo json_encode($respons);
+if(!in_array($ext,$ekstensi)){
+    $respons = [
+        'success' => 0,
+        'message' => "tipe file tidak cocok"
+    ];
+    echo json_encode($respons);
+}else{
+    if($ukuran < 1044070){
+        move_uploaded_file($_FILES['foto']['tmp_name'], $Path);
+        $qin = mysqli_query($koneksi,"INSERT INTO tbl_barang(id_barang,nama_barang,foto,jenis,brand) VALUES('$id','$nama','$img','$jenis','$brand')");
+        if($qin){
+            $qs = mysqli_query($koneksi,"INSERT INTO tbl_stok(barang,stok) VALUES('$id',0)");
+            if($qs){
+                $respons = [
+                    'success' => 1,
+                    'message' => "berhasil simpan"
+                ];
+                echo json_encode($respons);
+            }else{
+                $respons = [
+                    'success' => 0,
+                    'message' => "gagal simpan ke tbl stok"
+                ];
+                echo json_encode($respons);
+            }
+        }else{
+            $respons = [
+                'success' => 0,
+                'message' => "gagal simpan ke tbl barang"
+            ];
+            echo json_encode($respons);
+        }
     }else{
         $respons = [
             'success' => 0,
-            'message' => "gagal simpan"
+            'message' => "file terlalu besar"
         ];
         echo json_encode($respons);
     }

@@ -8,45 +8,51 @@ if($_POST['ket'] == ''){
     ];
     echo json_encode($respons);
 }else{
+    $tujuan = $_POST['tujuan'];
+    $ket = $_POST['ket'];
+    $usr = $_POST['id'];
+    $qs = mysqli_query($koneksi,"SELECT * FROM tmp WHERE jenis = 2 AND user = '$usr'");
     $query = mysqli_query($koneksi,"SELECT MAX(id_barang_keluar) AS max_code FROM tbl_barang_keluar");
     $data = mysqli_fetch_array($query);
     $a = $data['max_code'];
     $urut = (int)substr($a,2,3);
     $urut++;
     $id = "BK".sprintf("%03s",$urut);
-    $br = $_POST['barang'];
-    $jm = $_POST['jumlah'];
     $tgl = date('Y-m-d');
-    $ket = $_POST['ket'];
-    $adm = $_POST['id'];
-    $cek = mysqli_query($koneksi,"SELECT stok FROM tbl_stok WHERE barang = '$br'");
-    $s = mysqli_fetch_array($cek);
-    if($s['stok'] < $jm){
+    while ($c = mysqli_fetch_array($qs)){
+        $sm = mysqli_query($koneksi,"SELECT SUM(jumlah) AS sm FROM tmp WHERE kode_br = '$c[kode_br]' AND jenis = 2");
+        $m = mysqli_fetch_array($sm);
+        $cek = mysqli_query($koneksi,"SELECT stok FROM tbl_stok WHERE barang = '$c[kode_br]'");
+        $s = mysqli_fetch_array($cek);
+        if($s['stok'] < $m['sm']){
+            $respons = [
+                'success' => 0,
+                'message' => "Stok tidak cukup !!"
+            ];
+            echo json_encode($respons);
+        }else{
+            mysqli_query($koneksi,"INSERT INTO tbl_barang_keluar(id_barang_keluar,barang,jumlah_keluar) VALUES('$id','$c[kode_br]','$c[jumlah]')");
+            $qstok = mysqli_query($koneksi,"SELECT * FROM tbl_stok WHERE barang ='$c[kode_br]'");
+            $x = mysqli_fetch_array($qstok);
+            $stok = $x['stok'] - $c['jumlah'];
+            $ups = mysqli_query($koneksi,"UPDATE tbl_stok SET stok ='$stok' WHERE barang = '$c[kode_br]'");
+        }
+    }
+    $sum = mysqli_query($koneksi,"SELECT SUM(jumlah_keluar) AS sm FROM tbl_barang_keluar WHERE id_barang_keluar = '$id'");
+    $m = mysqli_fetch_array($sum);
+    $transaksi = mysqli_query($koneksi,"INSERT INTO tbl_transaksi(id_transaksi,jenis_transaksi,keterangan,total_item,tgl_transaksi,user,tipe) VALUES('$id','$_POST[tujuan]','$_POST[ket]','$m[sm]','$tgl','$usr','K')");
+    mysqli_query($koneksi,"DELETE FROM tmp WHERE jenis = 2");
+    if($transaksi){
         $respons = [
-            'success' => 0,
-            'message' => "Stok tidak cukup !!"
+            'success' => 1,
+            'message' => "Berhasil Input Barang keluar"
         ];
         echo json_encode($respons);
     }else{
-        $in = mysqli_query($koneksi,"INSERT INTO tbl_barang_keluar(id_barang_keluar,barang,jumlah_keluar,tgl_keluar,keterangan,user) VALUES('$id','$br','$jm','$tgl','$ket','$adm')");
-        if($in){
-            $qstok = mysqli_query($koneksi,"SELECT * FROM tbl_stok WHERE barang ='$br'");
-            $x = mysqli_fetch_array($qstok);
-            $stok = $x['stok'] - $jm;
-            $ups = mysqli_query($koneksi,"UPDATE tbl_stok SET stok ='$stok' WHERE barang = '$br'");
-            if($ups){
-                $respons = [
-                    'success' => 1,
-                    'message' => "Berhasil Input Barang keluar"
-                ];
-                echo json_encode($respons);
-            }
-        }else{
-            $respons = [
-                'success' => 0,
-                'message' => "Gagal!!"
-            ];
-            echo json_encode($respons);
-        }
+        $respons = [
+            'success' => 0,
+            'message' => "Gagal!!"
+        ];
+        echo json_encode($respons);
     }
 }

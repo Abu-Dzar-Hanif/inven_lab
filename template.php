@@ -69,6 +69,8 @@
                             href="index.php?p=<?= password_hash('data-brand',PASSWORD_DEFAULT)?>">Data Brand</a>
                         <a class="collapse-item"
                             href="index.php?p=<?= password_hash('data-barang',PASSWORD_DEFAULT)?>">Data Barang</a>
+                        <a class="collapse-item"
+                            href="index.php?p=<?= password_hash('data-tujuan',PASSWORD_DEFAULT)?>">Data Tujuan</a>
                         <?php
                         if($_SESSION['level'] == 1){
                         ?>
@@ -251,6 +253,20 @@
             format: 'yyyy/mm/dd'
         });
     });
+
+    function previewImg() {
+        document.getElementById("imgv").style.display = "block";
+        var oFReader = new FileReader();
+        oFReader.readAsDataURL(document.getElementById("foto").files[0]);
+        oFReader.onload = function(oFREvent) {
+            document.getElementById("imgv").src = oFREvent.target.result;
+        };
+    };
+    document.getElementById("img_ori").style.display = "block";
+
+    function hide() {
+        document.getElementById("img_ori").style.display = "none";
+    };
     </script>
 </body>
 

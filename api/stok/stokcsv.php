@@ -7,6 +7,7 @@ if (mysqli_num_rows($query) > 0) {
   while ($row = mysqli_fetch_array($query)) {
         $a = [
         'no' => $no++,
+        'id_barang'=> $row['id_barang'],
         'nama_barang'=> $row['nama_barang'],
         'nama_jenis'=> $row['nama_jenis'],
         'nama_brand'=> $row['nama_brand'],

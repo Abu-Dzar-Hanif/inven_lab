@@ -4,10 +4,15 @@
         <h6 class="m-0 font-weight-bold text-primary">Tambah Barang</h6>
     </div>
     <div class="card-body">
-        <form action="admin/proses/input_barang.php" method="post">
+        <form action="admin/proses/input_barang.php" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nama">Nama Barang</label>
                 <input type="text" name="nama" class="form-control" id="nama">
+            </div>
+            <div class="form-group">
+                <label for="foto">Foto</label>
+                <img id="imgv" alt="" width="50%" class="my-1">
+                <input type="file" name="foto" id="foto" class="form-control" onChange="previewImg();">
             </div>
             <div class="form-group">
                 <label for="jenis">Jenis Barang</label>

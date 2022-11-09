@@ -7,6 +7,7 @@ while ($a = mysqli_fetch_array($query)) {
     $n = $no++;
     $a = [
         'no' => "$n",
+        'id_barang' => $a['id_barang'],
         'nama_barang' => $a['nama_barang'],
         'nama_jenis' => $a['nama_jenis'],
         'nama_brand' => $a['nama_brand'],

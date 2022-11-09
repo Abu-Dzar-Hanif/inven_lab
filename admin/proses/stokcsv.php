@@ -7,6 +7,7 @@ if (mysqli_num_rows($query) > 0) {
   while ($row = mysqli_fetch_array($query)) {
         $a = [
         'no' => $no++,
+        'id_barang'=> $row['id_barang'],
         'nama_barang'=> $row['nama_barang'],
         'nama_jenis'=> $row['nama_jenis'],
         'nama_brand'=> $row['nama_brand'],
@@ -20,7 +21,7 @@ header('Content-Type: text/csv; charset=utf-8');
 header("Content-Disposition: attachment; filename=laporan_stok_barang.csv");
 $output = fopen('php://output', 'w');
 fputcsv($output, array("Laporan Stok Barang"));
-fputcsv($output, array('No', 'Nama Barang', 'Jenis', 'Brand','Stok'));
+fputcsv($output, array('No','Kode Barang', 'Nama Barang', 'Jenis', 'Brand','Stok'));
 
 if (count($data) > 0) {
   foreach ($data as $row) {

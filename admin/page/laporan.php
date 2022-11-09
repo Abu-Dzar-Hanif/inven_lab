@@ -52,6 +52,8 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Id Barang <?= $_POST['j'] == 1 ? 'Masuk' : 'Keluar'?></th>
+                        <th>Kode Barang</th>
                         <th>Nama Barang</th>
                         <th>Jumlah</th>
                         <th>Tgl <?= $_POST['j'] == 1 ? 'Masuk' : 'Keluar'?></th>
@@ -62,23 +64,37 @@
                 <tbody>
                     <?php
                     if($_POST['j'] == 1){
-                        $query = mysqli_query($koneksi,"SELECT * FROM `tbl_barang_masuk` JOIN tbl_barang ON tbl_barang_masuk.barang = tbl_barang.id_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand JOIN tbl_admin ON tbl_barang_masuk.user = tbl_admin.id_admin WHERE tgl_masuk BETWEEN '$_POST[tgl1]' AND '$_POST[tgl2]'");
+                        $query = mysqli_query($koneksi,"SELECT * FROM tbl_transaksi JOIN tbl_barang_masuk ON tbl_barang_masuk.id_barang_masuk = tbl_transaksi.id_transaksi JOIN tbl_barang ON tbl_barang_masuk.barang = tbl_barang.id_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand JOIN tbl_admin ON tbl_transaksi.user = tbl_admin.id_admin WHERE tgl_transaksi BETWEEN '$_POST[tgl1]' AND '$_POST[tgl2]'");
                     }elseif ($_POST['j'] == 2) {
-                        $query = mysqli_query($koneksi,"SELECT * FROM `tbl_barang_keluar` JOIN tbl_barang ON tbl_barang_keluar.barang = tbl_barang.id_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand JOIN tbl_admin ON tbl_barang_keluar.user = tbl_admin.id_admin WHERE tgl_keluar BETWEEN '$_POST[tgl1]' AND '$_POST[tgl2]'");
+                        $query = mysqli_query($koneksi,"SELECT * FROM tbl_transaksi JOIN tbl_barang_keluar ON tbl_barang_keluar.id_barang_keluar = tbl_transaksi.id_transaksi JOIN tbl_barang ON tbl_barang_keluar.barang = tbl_barang.id_barang JOIN tbl_brand ON tbl_barang.brand = tbl_brand.id_brand JOIN tbl_admin ON tbl_transaksi.user = tbl_admin.id_admin WHERE tgl_transaksi BETWEEN '$_POST[tgl1]' AND '$_POST[tgl2]'");
                     }
                     $no = 1;
                     while ($a = mysqli_fetch_array($query)) {
                     ?>
                     <tr>
                         <td><?= $no++?></td>
+                        <td><?= $_POST['j'] == 1 ? $a['id_barang_masuk'] : $a['id_barang_keluar']?></td>
+                        <td><?= $a['id_barang']?></td>
                         <td><?= $a['nama_barang']?> (<?= $a['nama_brand']?>)</td>
                         <td><?= $_POST['j'] == 1 ? $a['jumlah_masuk'] : $a['jumlah_keluar']?></td>
-                        <td><?= $_POST['j'] == 1 ? $a['tgl_masuk'] : $a['tgl_keluar']?></td>
+                        <td><?= $a['tgl_transaksi']?></td>
                         <td><?= $a['keterangan']?></td>
                         <td><?= $a['nama']?></td>
                     </tr>
-
                     <?php }?>
+                    <tr>
+                        <td colspan="4">Total</td>
+                        <?php
+                        if($_POST['j'] ==1){
+                            $sm = mysqli_query($koneksi,"SELECT SUM(total_item) AS tl FROM tbl_transaksi WHERE tgl_transaksi BETWEEN '$_POST[tgl1]' AND '$_POST[tgl2]' AND tipe='M'");
+                            $sum = mysqli_fetch_array($sm);
+                        }elseif ($_POST['j'] ==2) {
+                            $sm = mysqli_query($koneksi,"SELECT SUM(total_item) AS tl FROM tbl_transaksi WHERE tgl_transaksi BETWEEN '$_POST[tgl1]' AND '$_POST[tgl2]' AND tipe='K'");
+                            $sum = mysqli_fetch_array($sm);
+                        }
+                        ?>
+                        <td><?= $sum['tl']?></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

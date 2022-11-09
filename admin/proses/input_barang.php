@@ -10,11 +10,30 @@ if(isset($_POST['submit'])){
     $nama = $_POST['nama'];
     $brand = $_POST['brand'];
     $jenis = $_POST['jenis'];
-    $qin = mysqli_query($koneksi,"INSERT INTO tbl_barang(id_barang,nama_barang,jenis,brand) VALUES('$id','$nama','$jenis','$brand')");
-    if($qin){
-        $qs = mysqli_query($koneksi,"INSERT INTO tbl_stok(barang,stok) VALUES('$id',0)");
-        if($qs){
+    $rand = rand();
+    $ekstensi =  ['png','jpg','jpeg'];
+    $filename = str_replace(" ","",$_FILES['foto']['name']);
+    $ukuran = $_FILES['foto']['size'];
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    $img = $rand.$filename;
+    $Path = "../img/" . $img;
+    if(!in_array($ext,$ekstensi)){
+        $p = password_hash('data-barang',PASSWORD_DEFAULT);
+                    header("location: ../../index.php?p=$p");
+    }else{
+        if($ukuran < 1044070){
+            move_uploaded_file($_FILES['foto']['tmp_name'], $Path);
+            $qin = mysqli_query($koneksi,"INSERT INTO tbl_barang(id_barang,nama_barang,foto,jenis,brand) VALUES('$id','$nama','$img','$jenis','$brand')");
+            if($qin){
+                $qs = mysqli_query($koneksi,"INSERT INTO tbl_stok(barang,stok) VALUES('$id',0)");
+                if($qs){
+                    $p = password_hash('data-barang',PASSWORD_DEFAULT);
+                    header("location: ../../index.php?p=$p");
+                }
+            }
+        }else{
             $p = password_hash('data-barang',PASSWORD_DEFAULT);
-            header("location: ../../index.php?p=$p");}
+                    header("location: ../../index.php?p=$p");
         }
+    }
 }

@@ -35,6 +35,18 @@ if(isset($_GET['p'])){
         case password_verify('data-barang-masuk',$page):
             include('admin/page/data_barang_masuk.php');
             break;
+        case password_verify('data-tujuan',$page):
+            include('admin/page/data_tujuan.php');
+            break;
+        case password_verify('tambah-tujuan',$page):
+            include('admin/page/tambah_tujuan.php');
+            break;
+        case password_verify('edit-tujuan',$page):
+            include('admin/page/edit_tujuan.php');
+            break;
+        case password_verify('detail-transaksi-masuk',$page):
+            include('admin/page/detail_brmasuk.php');
+            break;
         case password_verify('tambah-barang-masuk',$page):
             include('admin/page/tambah_brmasuk.php');
             break;
@@ -49,6 +61,9 @@ if(isset($_GET['p'])){
             break;
         case password_verify('data-barang-keluar',$page):
             include('admin/page/data_barang_keluar.php');
+            break;
+        case password_verify('detail-transaksi-keluar',$page):
+            include('admin/page/detail_brkeluar.php');
             break;
         case password_verify('tambah-barang-keluar',$page):
             include('admin/page/tambah_brkeluar.php');
